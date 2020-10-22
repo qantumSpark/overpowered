@@ -13,6 +13,6 @@ func _ready():
 
 func _physics_process(delta):
 	if $TileMap/Player/DragLine_gfx.is_dragging:
-		Engine.set_time_scale(.2)
+		Engine.set_time_scale(.05)
 	else:
 		Engine.set_time_scale(1)

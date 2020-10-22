@@ -19,6 +19,7 @@ var is_dragging = false
 
 func _physics_process(delta):
 	_animate()
+	attack_handler()
 	
 
 func _is_walled():
@@ -40,22 +41,15 @@ func _get_direction():
 	var dir = int(rigth) - int(left)
 	return dir
 
-#Récupère les inputs et change le mouvement en conséquence
-func _handle_input_move():
-	var left = Input.is_action_pressed("left")
-	var rigth = Input.is_action_pressed("right")
-	var jump = Input.is_action_just_pressed("jump")
-	
-	var dir = int(rigth) - int(left)
-
-	if dir == 0:
-		motion.x = lerp(motion.x, 0, 0.3)
-	else:
-		motion.x += lerp(motion.x, motion.x + speed * dir, 0.8)
-		if abs(motion.x) > max_speed:
-			motion.x = max_speed * dir
-	if jump and _can_jump():
-			motion.y -= jump_force
+func attack_handler():
+	if Input.is_action_just_pressed("attack"):
+		$Attack_item/Pivot/Sprite.visible = true
+		$Attack_item/Pivot/Sprite/slash_anim.play("slash")
+		$Attack_item.anim_player.play("slash")
+		yield(get_tree().create_timer(0.2), "timeout")
+		$Attack_item.anim_player.play("idle")
+		yield(get_tree().create_timer(0.2), "timeout")
+		$Attack_item/Pivot/Sprite.visible = false
 
 
 func _move():

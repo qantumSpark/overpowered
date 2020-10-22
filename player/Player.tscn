@@ -1,9 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/Adventurer Sprite Sheet v1.1.png" type="Texture" id=2]
 [ext_resource path="res://UI/DragLine_gfx.tscn" type="PackedScene" id=3]
 [ext_resource path="res://player/StateMachine.gd" type="Script" id=4]
+[ext_resource path="res://items/Sword.tscn" type="PackedScene" id=5]
+[ext_resource path="res://player/Attack_item.gd" type="Script" id=6]
+[ext_resource path="res://player/swoosh.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.30812, 7.49482 )
@@ -60,21 +63,92 @@ tracks/0/keys = {
 "values": [ 13, 14, 15, 16, 17, 18, 19, 20 ]
 }
 
+[sub_resource type="Animation" id=6]
+resource_name = "idle"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sword:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -120.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sword:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -12.3074, 12.3491 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "slash"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sword:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ -120.0, -240.0, -330.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sword:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -12.3074, 12.3491 ), Vector2( 15.2338, 3.52961 ), Vector2( 17.1237, -13.3218 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "slash"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
 [node name="Player" type="KinematicBody2D"]
 input_pickable = true
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="."]
+self_modulate = Color( 1.22, 1.11, 1.05, 1 )
 position = Vector2( 1.12373, -6.3678 )
 texture = ExtResource( 2 )
 vframes = 16
 hframes = 13
-frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -1.15623, 1.05112 )
 shape = SubResource( 1 )
 
@@ -85,17 +159,26 @@ anims/run = SubResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+drag_margin_left = 0.3
+drag_margin_top = 0.3
+drag_margin_right = 0.3
+drag_margin_bottom = 0.3
 
 [node name="Ground_ray" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, 9 )
 
 [node name="Wall_left_ray" type="RayCast2D" parent="."]
+visible = false
 rotation = 1.5708
 enabled = true
 cast_to = Vector2( 0, 7 )
 
 [node name="Wall_right_ray" type="RayCast2D" parent="."]
+visible = false
 rotation = -1.5708
 enabled = true
 cast_to = Vector2( 0, 5 )
@@ -106,4 +189,30 @@ cast_to = Vector2( 0, 5 )
 script = ExtResource( 4 )
 
 [node name="Timer" type="Timer" parent="StateMachine"]
+
+[node name="Attack_item" type="Node2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="Pivot" type="Node2D" parent="Attack_item"]
+
+[node name="Sword" parent="Attack_item/Pivot" instance=ExtResource( 5 )]
+position = Vector2( -12.3074, 12.3491 )
+rotation = -2.09439
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Attack_item/Pivot"]
+anims/idle = SubResource( 6 )
+anims/slash = SubResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="Attack_item/Pivot"]
+position = Vector2( 21.827, 5.28289 )
+rotation = -3.40339
+texture = ExtResource( 7 )
+flip_h = true
+hframes = 4
+
+[node name="slash_anim" type="AnimationPlayer" parent="Attack_item/Pivot/Sprite"]
+anims/slash = SubResource( 7 )
+
+[node name="H_ray" type="RayCast2D" parent="Attack_item"]
+enabled = true
 [connection signal="timeout" from="StateMachine/Timer" to="StateMachine" method="_on_Timer_timeout"]

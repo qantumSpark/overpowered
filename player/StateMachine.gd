@@ -7,7 +7,7 @@ var previous_state = null
 var wall_side
 var previous_wall_side
 var can_jump = true
-var jump_count = 0
+var jump_count = 2
 enum {
 	idle,
 	run,
@@ -22,17 +22,13 @@ func _physics_process(delta):
 	_apply_state()
 	Parent._move()
 	
-	if state == wall:
-		var side = Parent._get_wall_side()
-
-		if wall_side != side:
-			print("refill")
-			previous_wall_side = wall_side
-			wall_side = side
-			jump_count = 2
+	if jump_count < 2 :
+		if state == wall:
+			var side = Parent._get_wall_side()
+			jump_count += 1
 			
-	if state == idle or state == run:
-		jump_count = 2
+		if state == idle or state == run:
+			jump_count += 1
 	
 
 func set_state(new_state):
@@ -113,3 +109,4 @@ func _state_logic():
 
 func _on_Timer_timeout():
 	can_jump = true
+	#jump_count = 1
