@@ -26,12 +26,12 @@ func _process(delta):
 			Line.add_point(get_local_mouse_position() - position)
 	
 	if Input.is_action_pressed("dash") and is_dragging:
-		print(is_dragging)
+
 		if Line.get_point_count() == 1:
 			Line.add_point(mouse_pos)
 		if is_dragging == true:
 			Line.set_point_position(1, mouse_pos)
-			print(Line.get_point_count())
+
 	if Input.is_action_just_released("dash"):
 		Line.clear_points()
 		Line.visible = false
