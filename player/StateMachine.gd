@@ -110,3 +110,20 @@ func _state_logic():
 func _on_Timer_timeout():
 	can_jump = true
 	#jump_count = 1
+
+func _get_jump_count():
+	return var2str(jump_count)
+
+func _get_state():
+	match state :
+		idle:
+			return " idle "
+		run:
+			return " run "
+		jump:
+			return " jump "
+		fall:
+			return " fall "
+		wall:
+			return " wall "
+		

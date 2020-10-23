@@ -1,11 +1,11 @@
 extends Node
-
+class_name StateMachine
 
 var state = null setget set_state
 var previous_state = null
 var states = {}
 
-onready var Parent = get_parent()
+onready var parent = get_parent()
 
 func _physics_process(delta):
 	if state != null:
@@ -39,3 +39,5 @@ func set_state(new_state):
 func add_state(state_name):
 	
 	states[state_name] = states.size()
+
+

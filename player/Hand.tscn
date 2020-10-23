@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://player/Hand.gd" type="Script" id=3]
+
+[node name="Hand" type="Position2D"]
+script = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Pivot" type="Node2D" parent="."]
+position = Vector2( 11.603, 4.16352 )
+
+[node name="Debug" type="Node2D" parent="."]
+position = Vector2( 11.603, 4.16352 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Control" type="Control" parent="Debug"]
+margin_left = 36.0652
+margin_top = 8.97694
+margin_right = 76.0652
+margin_bottom = 48.9769
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="m_angle" type="Label" parent="Debug/Control"]
+margin_right = 40.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pivot_rotation" type="Label" parent="Debug/Control"]
+margin_top = 14.0
+margin_right = 40.0
+margin_bottom = 28.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" type="Label" parent="Debug/Control"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+text = "testing"
+__meta__ = {
+"_edit_use_anchors_": false
+}
