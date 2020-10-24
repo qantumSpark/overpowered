@@ -1,5 +1,7 @@
 extends Node
 
+onready var parent = get_parent()
+
 onready var idle = $Idle
 onready var walk = $Walk
 onready var chase = $Chase
@@ -21,7 +23,7 @@ func _ready():
 	current_state = "walk"
 
 func _physics_process(delta):
-	states_map.get("walk").update(delta)
+	states_map.get(current_state).update(delta)
 	pass
 
 func update():
@@ -36,19 +38,23 @@ func update():
 			pass
 
 func _change_state(state_name):
+	
 	if state_name == current_state:
 		return
 	states_stack.push_front(state_name)
 	current_state = state_name
-	
+	print(current_state)
 	if states_stack.size() > 2:
 		states_stack.pop_back()
 
 
-func _on_AggroZone_area_entered():
-	print("enter")
+func _on_AggroZone_body_entered(body):
+	
+	parent.target = body
 	_change_state("chase")
 
 
-func _on_AggroZone_body_entered(body):
-	print("hey")
+func _on_AggroZone_body_exited(body):
+	
+	#parent.target = null
+	_change_state("walk")

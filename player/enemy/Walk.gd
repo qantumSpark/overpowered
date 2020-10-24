@@ -1,6 +1,6 @@
 extends Node
 
-onready var Enemy = get_parent().get_parent()
+onready var parent = get_parent().get_parent()
 
 # Initialisation
 func enter():
@@ -20,12 +20,15 @@ func handle_input(_event):
 
 func update(_delta):
 	
-	Enemy._apply_gravity()
-	if Enemy._is_valid_dir():
-		Enemy._move()
+	parent._apply_gravity()
+
+	#Check le sol pour déterminer si un changement de direction est nécessaire
+	if parent._is_valid_dir():
+		parent._move()
 	else: 
-		Enemy._flip_dir()
-	Enemy.move_and_slide(Enemy.motion, Vector2.UP)
+		parent._flip_dir()
+	
+	parent.move_and_slide(parent.motion, Vector2.UP)
 
 
 func _on_animation_finished(_anim_name):

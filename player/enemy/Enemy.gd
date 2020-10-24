@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-onready var speed = 25
+onready var speed = 10
 onready var max_speed = 30
 onready var jump_force = 200
 onready var gravity = 25
@@ -11,6 +11,8 @@ onready var ground_ray = $Ground_rays
 onready var aggro_zone = $AggroZone
 var motion = Vector2()
 var state
+var target = null
+
 
 func _physics_process(_delta):
 
@@ -28,12 +30,16 @@ func _move():
 	motion.x = lerp(motion.x, 0, 0.2)
 	if abs(motion.x) > max_speed:
 		motion.x = max_speed * dir
-	
+
+func _get_target_dir():
+	var t_pos = target.position
+
+	if t_pos.x > position.x :
+		return 1
+	elif t_pos.x < position.x :
+		return -1
 
 func _is_valid_dir():
-	#print("dir:", dir)
-	#print("is valid", ground_ray._is_valid_dir(dir))
-	#print("==========================")
 	return ground_ray._is_valid_dir(dir)
 	
 
