@@ -27,7 +27,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1 ),
+"times": PoolRealArray( 0, 0.09 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1, -12 ), Vector2( 22, 23 ) ]
@@ -44,6 +44,30 @@ tracks/2/keys = {
 "update": 0,
 "values": [ 59.9999 ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("SlashEffect:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.05, 0.09 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.1, 0.1 ), Vector2( 0.55, 0.55 ), Vector2( 0.8, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sword:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.09, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 90.0002, 180.0, 90.0 ]
+}
 
 [node name="Sword" type="Node2D"]
 script = ExtResource( 1 )
@@ -57,9 +81,9 @@ region_rect = Rect2( 5.5, 10, 16, 30 )
 
 [node name="SlashEffect" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0 )
-position = Vector2( 1, -12 )
+position = Vector2( 22, 23 )
 rotation = 1.0472
-scale = Vector2( 0.6, 0.6 )
+scale = Vector2( 0.8, 1 )
 texture = ExtResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

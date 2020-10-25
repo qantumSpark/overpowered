@@ -12,15 +12,15 @@ export (int) var speed = 70
 export (int) var max_speed = 170
 export (int) var jump_force = -500
 
-
+var dir = 0
 var motion = Vector2()
 
 var is_dragging = false
 
 func _physics_process(delta):
-	$Debug/VBoxContainer/sword_angle.text = "Sword_angle: " + var2str(rad2deg($Hand/Pivot.rotation))
-	$Debug/VBoxContainer/State.text = "State: " + $StateMachine._get_state()
-	$Debug/VBoxContainer/jump_count.text = "Jump Counter: " + $StateMachine._get_jump_count()
+	check_direction()
+	_update_hit_box()
+	debug_display()
 	pass
 
 # MOTION
@@ -37,6 +37,19 @@ func _move():
 
 
 # CONTEXT & INPUTS
+
+#Flip l'image en fonction de la direction
+func check_direction():
+	if dir == 1:
+		_Sprite.flip_h = false
+	elif dir == -1:
+		_Sprite.flip_h = true
+		
+	if $StateMachine._get_state() == "wall":
+		if _get_direction() == 1:
+			 _Sprite.flip_h = true
+		elif _get_direction() == -1:
+			_Sprite.flip_h = false
 
 # Retourne la direction en fonction des inputs
 func _get_direction():
@@ -69,8 +82,24 @@ func _get_wall_side():
 		return null
 
 # ACTIONS & INTERACTIONS
-func attack_handler():
-	pass
+func _get_dammage():
+	var dmg = 5
+	return dmg
+	
+func _get_knockback():
+	var kb = 50
+	return kb
+
+func _update_hit_box():
+	$Hand/Pivot/Hitbox/CollisionShape2D.disabled = true
+	if Input.is_action_just_pressed("attack"):
+		print("Attack!")
+		$Hand/Pivot/Hitbox/CollisionShape2D.disabled = false
+	
+func debug_display():
+	$Debug/VBoxContainer/sword_angle.text = "Sword_angle: " + var2str(rad2deg($Hand/Pivot.rotation))
+	$Debug/VBoxContainer/State.text = "State: " + $StateMachine._get_state()
+	$Debug/VBoxContainer/jump_count.text = "Jump Counter: " + $StateMachine._get_jump_count()
 
 
 

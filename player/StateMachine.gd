@@ -1,6 +1,7 @@
 extends Node
 
 onready var Parent = get_parent()
+onready var animPlayer = Parent.get_node("AnimationPlayer")
 var state = idle
 var previous_state = null
 
@@ -38,14 +39,16 @@ func set_state(new_state):
 func _apply_state():
 	var jump_ask = Input.is_action_just_pressed("jump")
 	var dir = Parent._get_direction()
+	Parent.dir = dir
 	var friction = lerp(Parent.motion.x, 0, 0.3)
 	var h_move = lerp(Parent.motion.x, Parent.motion.x + Parent.speed * dir, 0.8)
 	match state:
 		
 		idle:
 			Parent.motion.x -= friction
-			
+			animPlayer.play("idle")
 		run:
+			animPlayer.play("run")
 			Parent.motion.x += h_move
 			
 		jump:
@@ -60,6 +63,8 @@ func _apply_state():
 			Parent.motion.x += h_move
 			
 		wall:
+			animPlayer.play("wall_slide")
+			Parent.get_node("Sprite").flip_h = !Parent.get_node("Sprite").flip_h
 			Parent.motion.y = 25
 			Parent.motion.x += h_move
 	
@@ -69,6 +74,7 @@ func _apply_state():
 #Update la state en fonction du context
 func _state_logic():
 	var dir = Parent._get_direction()
+
 	var jump_ask = Input.is_action_just_pressed("jump")
 	
 	match state:

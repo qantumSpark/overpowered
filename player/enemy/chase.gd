@@ -5,7 +5,9 @@ onready var parent = get_parent().get_parent()
 # Initialisation
 func enter():
 	#Start animation ici
-	pass
+	parent.speed = 15
+	parent.max_speed = 40
+
 
 
 # Clean up 
@@ -19,7 +21,6 @@ func handle_input(_event):
 
 
 func update(_delta):
-	print("hello")
 	var target_direction = parent._get_target_dir()
 	
 	parent._apply_gravity()

@@ -1,0 +1,33 @@
+[gd_scene format=2]
+
+[node name="Body" type="KinematicBody2D"]
+
+[node name="Stats" type="Node" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Collisions" type="Node" parent="."]
+
+[node name="Areas" type="Node" parent="Collisions"]
+
+[node name="HurtBox" type="Area2D" parent="Collisions/Areas"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Areas/HurtBox"]
+
+[node name="HitBox" type="Area2D" parent="Collisions/Areas"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Areas/HitBox"]
+
+[node name="Rays" type="Node" parent="Collisions"]
+
+[node name="Ground" type="RayCast2D" parent="Collisions/Rays"]
+
+[node name="Wall" type="RayCast2D" parent="Collisions/Rays"]
+
+[node name="StateMachine" type="Node" parent="."]
+
+[node name="state" type="Node" parent="StateMachine"]

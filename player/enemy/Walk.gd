@@ -4,8 +4,8 @@ onready var parent = get_parent().get_parent()
 
 # Initialisation
 func enter():
-	#Start animation ici
-	pass
+	parent.speed = 8
+	parent.max_speed = 20
 
 
 # Clean up 

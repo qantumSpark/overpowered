@@ -5,7 +5,7 @@ onready var parent = get_parent()
 onready var idle = $Idle
 onready var walk = $Walk
 onready var chase = $Chase
-onready var attack = $Attack
+onready var hurt = $Hurt
 
 var states_map = {}
 
@@ -18,7 +18,7 @@ func _ready():
 		"idle": idle,
 		"walk": walk,
 		"chase": chase,
-		"attack": attack
+		"hurt": hurt
 	}
 	current_state = "walk"
 
@@ -34,7 +34,7 @@ func update():
 			pass
 		"chase":
 			pass
-		"attack":
+		"hurt":
 			pass
 
 func _change_state(state_name):
@@ -43,9 +43,9 @@ func _change_state(state_name):
 		return
 	states_stack.push_front(state_name)
 	current_state = state_name
-	print(current_state)
 	if states_stack.size() > 2:
 		states_stack.pop_back()
+	states_map.get(current_state).enter()
 
 
 func _on_AggroZone_body_entered(body):
@@ -56,5 +56,5 @@ func _on_AggroZone_body_entered(body):
 
 func _on_AggroZone_body_exited(body):
 	
-	#parent.target = null
+	parent.target = null
 	_change_state("walk")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://player/enemy/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://player/enemy/StatesMachine.gd" type="Script" id=2]
@@ -6,11 +6,13 @@
 [ext_resource path="res://player/enemy/Walk.gd" type="Script" id=4]
 [ext_resource path="res://player/enemy/chase.gd" type="Script" id=5]
 [ext_resource path="res://player/enemy/AggroZone.gd" type="Script" id=6]
+[ext_resource path="res://debug.tscn" type="PackedScene" id=7]
+[ext_resource path="res://boxes/Hurtbox.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 64, 27 )
+extents = Vector2( 142, 30 )
 
 [node name="Enemy" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -25,11 +27,12 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 1 )
 
 [node name="AggroZone" type="Area2D" parent="."]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 2
 script = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AggroZone"]
@@ -47,9 +50,10 @@ script = ExtResource( 4 )
 [node name="Chase" type="Node" parent="StatesMachine"]
 script = ExtResource( 5 )
 
-[node name="Attack" type="Node" parent="StatesMachine"]
+[node name="Hurt" type="Node" parent="StatesMachine"]
 
 [node name="Ground_rays" type="Node2D" parent="."]
+visible = false
 script = ExtResource( 3 )
 
 [node name="Left_ray" type="RayCast2D" parent="Ground_rays"]
@@ -61,5 +65,17 @@ cast_to = Vector2( 0, 15 )
 position = Vector2( 11, 0 )
 enabled = true
 cast_to = Vector2( 0, 15 )
+
+[node name="Debug" parent="." instance=ExtResource( 7 )]
+position = Vector2( -6, 2 )
+
+[node name="Hurtbox" parent="." instance=ExtResource( 8 )]
+scale = Vector2( 1.2, 1.2 )
+collision_layer = 8
+collision_mask = 4
+
+[node name="Timer" type="Timer" parent="."]
 [connection signal="body_entered" from="AggroZone" to="StatesMachine" method="_on_AggroZone_body_entered"]
 [connection signal="body_exited" from="AggroZone" to="StatesMachine" method="_on_AggroZone_body_exited"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
